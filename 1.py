@@ -28,8 +28,6 @@ def gettoken(refresh_token):
     jsontxt = json.loads(html.text)
     refresh_token = jsontxt['refresh_token']
     access_token = jsontxt['access_token']
-    with open(path, 'w+') as f:
-        f.write(refresh_token)
     return access_token
 def main():
     fo = open(path, "r+")
@@ -42,6 +40,7 @@ def main():
     'Authorization':access_token,
     'Content-Type':'application/json'
     }
+    print('此次运行开始时间为 :', localtime)
     try:
         if req.get(r'https://graph.microsoft.com/v1.0/me/drive/root',headers=headers).status_code == 200:
             num1+=1
@@ -61,7 +60,7 @@ def main():
         if req.get(r'https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messageRules',headers=headers).status_code == 200:
             num1+=1
             print('6调用成功'+str(num1)+'次')    
-        if req.get(r'https://graph.microsoft.com/v1.0/me/mailFolders/Inbox/messages/delta',headers=headers).status_code == 200:
+        if req.get(r'https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messageRules',headers=headers).status_code == 200:
             num1+=1
             print('7调用成功'+str(num1)+'次')
         if req.get(r'https://graph.microsoft.com/v1.0/me/drive/root/children',headers=headers).status_code == 200:
@@ -76,9 +75,10 @@ def main():
         if req.get(r'https://graph.microsoft.com/v1.0/me/outlook/masterCategories',headers=headers).status_code == 200:
             num1+=1
             print('10调用成功'+str(num1)+'次')
-            print('此次运行结束时间为 :', localtime)
     except:
         print("pass")
         pass
-for _ in range(3):
+for _ in range(6): 
+    randtime1 = random.randint(600,1200)
+    time.sleep(randtime1)
     main()
